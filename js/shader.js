@@ -23,10 +23,10 @@ uniform vec3 u_resolution;
 uniform float u_time;
 
 vec3 palette(float t) {
-  vec3 a = vec3(0.9, 0.4, 0.45);
-  vec3 b = vec3(0.9, 0.3, 0.5);
+  vec3 a = vec3(0.9, 0.4, 0.47);
+  vec3 b = vec3(0.8, 0.3, 0.6);
   vec3 c = vec3(1.0, 1.0, 1.0);
-  vec3 d = vec3(0.6, 0.416, 0.357);
+  vec3 d = vec3(0.7, 0.416, 0.357);
 
   return a + b * cos(3.14 * (c * t + d));
 }
