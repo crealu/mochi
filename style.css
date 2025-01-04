@@ -48,7 +48,7 @@ body {
 	margin: 0 auto;
 	left: 0px;
 	right: 0px;
-	bottom: 240px;
+	bottom: 140px;
 	width: 100px;
 	height: 100px;
 	opacity: 0;
@@ -95,6 +95,10 @@ body {
 	.mochi-svg {
 		transform: scale(1.25) translateX(3px);
 		top: calc(50vh - 100px);
+	}
+
+	.the-canvas {
+		bottom: 240px;
 	}
 
 	.move-text {
