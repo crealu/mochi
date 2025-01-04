@@ -21,7 +21,7 @@ body {
 	left: 0px;
 	right: 0px;
 	top: calc(50vh - 115px);
-	transform: scale(1.25) translateX(10px);
+	transform: scale(1.25) translateX(5px);
 	z-index: 9
 
 }
@@ -88,10 +88,16 @@ body {
 
 @media (max-width: 800px) and (min-width: 200px) {
 	.mochi-title {
+		top: 100px;
 		width: 80%;
 	}
 
 	.mochi-svg {
-		transform: scale(0.8) translateX(3px);
+		transform: scale(1.0) translateX(3px);
+		top: calc(50vh - 100px;);
+	}
+
+	.move-text {
+		font-size: 22px;
 	}
 }
