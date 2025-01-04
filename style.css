@@ -94,7 +94,7 @@ body {
 
 	.mochi-svg {
 		transform: scale(1.0) translateX(3px);
-		top: calc(50vh - 100px;);
+		top: calc(50vh - 100px);
 	}
 
 	.move-text {
