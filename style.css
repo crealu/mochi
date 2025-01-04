@@ -93,7 +93,7 @@ body {
 	}
 
 	.mochi-svg {
-		transform: scale(1.0) translateX(3px);
+		transform: scale(1.25) translateX(3px);
 		top: calc(50vh - 100px);
 	}
 
