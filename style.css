@@ -14,16 +14,38 @@ body {
 	width: 500px;
 }
 
-.mochi {
+.mochi-wrapper {
+	position: relative;
 	display: block;
-	position: absolute;
+	margin: 0 auto;
+	top: calc(50vh - 200px);
+}
+
+.mochi {
+	position: relative;
+	display: block;
 	margin: 0 auto;
 	left: 0px;
 	right: 0px;
-	top: calc(50vh - 115px);
-	transform: scale(1.25) translateX(5px);
+	transform: scale(1.25) translateX(2px);
 	z-index: 9
+}
 
+.the-canvas {
+	position: relative;
+	display: block;
+	margin: 0 auto;
+	top: 6px;
+	width: 125px;
+	height: 100px;
+	opacity: 0;
+	transition: 0.25s transform ease, 0.3s opacity ease;
+	z-index: 0;
+/*	clip-path: ellipse(50%, 50%);*/
+/*	clip-path: circle(50%);*/
+/*	clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);*/
+	clip-path: polygon(50% 0, 0% 100%, 100% 100%, 50% 0);
+	background: transparent;
 }
 
 .move-text {
@@ -40,21 +62,6 @@ body {
 .move {
 	opacity: 0;
 	transition: 0.5s ease;
-}
-
-.the-canvas {
-	position: absolute;
-	display: block;
-	margin: 0 auto;
-	left: 0px;
-	right: 0px;
-	bottom: 140px;
-	width: 100px;
-	height: 100px;
-	opacity: 0;
-	transition: 0.25s transform ease, 0.3s opacity ease;
-	z-index: 0;
-	clip-path: circle(50%);
 }
 
 #mochi-components {
@@ -92,16 +99,19 @@ body {
 		width: 80%;
 	}
 
+	.mochi-wrapper {
+		
+	}
+
 	.mochi-svg {
-		transform: scale(1.25) translateX(3px);
-		top: calc(50vh - 100px);
+		transform: scale(1.25) translateX(2px);
 	}
 
 	.the-canvas {
-		bottom: 240px;
+
 	}
 
 	.move-text {
-		font-size: 22px;
+		font-size: 24px;
 	}
 }

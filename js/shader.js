@@ -1,6 +1,6 @@
 let canvas = document.querySelector('.the-canvas');
 
-let gl = canvas.getContext('webgl');
+let gl = canvas.getContext('webgl', { alpha: true });
 const timeLimit = 4;
 let time = 2.0;
 let uniformTime;
@@ -23,8 +23,8 @@ uniform vec3 u_resolution;
 uniform float u_time;
 
 vec3 palette(float t) {
-  vec3 a = vec3(0.9, 0.4, 0.47);
-  vec3 b = vec3(0.8, 0.3, 0.6);
+  vec3 a = vec3(0.9, 0.5, 0.47);
+  vec3 b = vec3(0.8, 0.4, 0.6);
   vec3 c = vec3(1.0, 1.0, 1.0);
   vec3 d = vec3(0.7, 0.416, 0.357);
 
@@ -39,7 +39,7 @@ void main() {
   vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / u_resolution.y;
   vec2 uv0 = uv * 0.3;
   vec3 finalColor = vec3(0.0);
-  float speed = 0.01;
+  float speed = 0.02;
   float x = 0.9 * sin(speed * u_time);
   float y = -0.9 * cos(speed * u_time);
   vec2 translate = vec2(x, y);
@@ -47,7 +47,7 @@ void main() {
   vec3 col = vec3(1.0);
 
   for (float i = 1.0; i < 2.0; i++) {
-    uv /= sin(speed * u_time) * circle(uv / x, 1.0);
+    uv /= sin(speed * u_time) * circle(uv / x, 0.5);
     // uv /= u_time * 1.5 - 0.5;
 
     float d = length(uv) * exp(length(uv0));
@@ -61,10 +61,20 @@ void main() {
   }
 
 
-  gl_FragColor = vec4(finalColor, 1.0);
+  gl_FragColor = vec4(finalColor, 0.5);
 }
 `;
 
+const fs1 = `
+precision mediump float;
+
+uniform vec3 u_resolution;
+uniform float u_time;
+
+void main() {
+  gl_FragColor = vec4(gl_FragCoord.x / 500.0, gl_FragCoord.y / 500.0, 0.5, 0.5); // Alpha = 0.5 for partial transparency
+}
+`;
 
 function loadShader(gl, type, source) {
   const shader = gl.createShader(type);
@@ -123,8 +133,9 @@ function start(theVS, theFS) {
 
 start(vs, fs);
 
-gl.clearColor(0.0, 0.0, 0.0, 1.0);
-gl.clearDepth(1.0);
+gl.clearColor(0.0, 0.0, 0.0, 0.0);
+gl.clear(gl.COLOR_BUFFER_BIT);
+// gl.clearDepth(1.0);
 gl.enable(gl.DEPTH_TEST);
 gl.depthFunc(gl.LEQUAL);
 
@@ -158,7 +169,7 @@ function hideCanvas() {
 }
 
 function displayCanvas() {    
-  canvas.style.opacity = '0.75';
+  canvas.style.opacity = '1.0';
   canvas.style.transform = 'scale(1.25)';
   canvas.style.zIndex = '10';
   render();
