@@ -19,12 +19,12 @@ function fillText(name) {
 
 function attack() {
 	let { name, start, duration } = moves[current];
-	mochi.src = 'img/mochi v2 mouth.svg';
+	mochi.src = 'img/mochi v3 mouth.svg';
 	sound.src = `audio/${name}.mp3`;
 	sound.play();
 	moveText.style.opacity = 0;
 	setTimeout(() => { 
-		mochi.src = 'img/mochi v2.svg';
+		mochi.src = 'img/mochi v3.svg';
 		move.textContent = '';
 		resetCurrent();
 		hideCanvas();
@@ -34,13 +34,13 @@ function attack() {
 
 function meow() {
 	let { name, start, duration } = moves[current];
-	mochi.src = 'img/mochi v2 mouth.svg';
+	mochi.src = 'img/mochi v3 mouth.svg';
   sound.currentTime = start;
   sound.play();
   fillText(name)
   setTimeout(() => { 
   	sound.pause(); 
-		mochi.src = 'img/mochi v2.svg';
+		mochi.src = 'img/mochi v3.svg';
 		move.textContent = '';
 		resetCurrent();
   }, duration * 1000);
