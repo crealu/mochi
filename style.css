@@ -27,7 +27,7 @@ body {
 	margin: 0 auto;
 	left: 0px;
 	right: 0px;
-	transform: scale(1.25) translateX(2px);
+	transform: scale(1.25) translateX(0px);
 	z-index: 9
 }
 
@@ -101,18 +101,14 @@ body {
 	}
 
 	.mochi-wrapper {
-		
+		top: calc(50vh - 250px);
 	}
 
 	.mochi-svg {
-		transform: scale(1.25) translateX(2px);
-	}
-
-	.the-canvas {
-
+		transform: scale(1.5) translateX(7px);
 	}
 
 	.move-text {
-		font-size: 24px;
+		font-size: 30px;
 	}
 }
