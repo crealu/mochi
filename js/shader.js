@@ -164,13 +164,15 @@ function hideCanvas() {
   canvas.style.opacity = '0';
   canvas.style.transform = 'scale(1.0)';
   canvas.style.zIndex = '0';
+  canvas.style.height = '0px';
   time = 2.0;
   pause();
 }
 
-function displayCanvas() {    
+function displayCanvas() {
   canvas.style.opacity = '1.0';
   canvas.style.transform = 'scale(1.25)';
   canvas.style.zIndex = '10';
+  canvas.style.height = '100px';
   render();
 }
