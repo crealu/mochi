@@ -104,6 +104,11 @@ body {
 		top: calc(50vh - 250px);
 	}
 
+	.the-canvas {
+/*		transform: translateY(-30px);*/
+		top: -30px;
+	}
+
 	.mochi {
 		transform: scale(0.9) translateX(7px);
 		-webkit-transform: scale(0.9) translateX(7px);
