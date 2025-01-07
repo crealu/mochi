@@ -2,7 +2,9 @@ let mochi = document.querySelector('.mochi');
 let sound = document.querySelector('.sound');
 let move = document.querySelector('.move');
 let moveText = document.querySelector('.move-text');
+let title = document.querySelector('.mochi-title');
 
+let mode = 'attack';
 let current = 0;
 
 function resetCurrent() {
@@ -37,19 +39,36 @@ function meow() {
 	mochi.src = 'img/mochi v3 mouth.svg';
   sound.currentTime = start;
   sound.play();
-  fillText(name)
   setTimeout(() => { 
   	sound.pause(); 
 		mochi.src = 'img/mochi v3.svg';
 		move.textContent = '';
 		resetCurrent();
+		hideCanvas();
+		fillText(name)
   }, duration * 1000);
 }
 
-function handleClick() {
-	// meow();
-	attack();
+function handleMochiClick() {
+	if (mode == 'attack') {
+		attack();
+	} else {
+		meow();
+	}
 	displayCanvas();
 }
 
-mochi.addEventListener('click', handleClick);
+function handleTitleClick() {
+	if (mode == 'attack') {
+		title.src = 'img/mochi title.svg';
+		mode = 'meow';
+	} else {
+		title.src = 'img/mochi title gradient.svg';
+		mode = 'attack';
+	}
+
+	console.log(mode);
+}
+
+mochi.addEventListener('click', handleMochiClick);
+title.addEventListener('click', handleTitleClick);
