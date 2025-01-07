@@ -104,9 +104,9 @@ body {
 		top: calc(50vh - 250px);
 	}
 
-	.mochi-svg {
-		transform: scale(1) translateX(7px);
-		-webkit-transform: scale(1) translateX(7px);
+	.mochi {
+		transform: scale(1) translateX(0px);
+		-webkit-transform: scale(1) translateX(0px);
 	}
 
 	.move-text {
