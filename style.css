@@ -18,7 +18,7 @@ body {
 	position: relative;
 	display: block;
 	margin: 0 auto;
-	top: calc(50vh - 200px);
+	top: calc(50vh - 250px);
 }
 
 .mochi {
@@ -105,8 +105,8 @@ body {
 	}
 
 	.mochi-svg {
-		transform: scale(1.5) translateX(7px);
-		-webkit-transform: scale(1.5) translateX(7px);
+		transform: scale(1.25) translateX(7px);
+		-webkit-transform: scale(1.25) translateX(7px);
 	}
 
 	.move-text {
