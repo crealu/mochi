@@ -106,6 +106,7 @@ body {
 
 	.mochi-svg {
 		transform: scale(1.5) translateX(7px);
+		-webkit-transform: scale(1.5) translateX(7px);
 	}
 
 	.move-text {
