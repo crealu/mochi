@@ -1,11 +1,10 @@
-let canvas = document.querySelector('.the-canvas');
-
-let gl = canvas.getContext('webgl', { alpha: true });
-const timeLimit = 4;
-let time = 2.0;
-let uniformTime;
-let theProgram;
-let id;
+// let canvas = document.querySelector('.the-canvas');
+// let gl = canvas.getContext('webgl', { alpha: true });
+// const timeLimit = 4;
+// let time = 2.0;
+// let uniformTime;
+// let theProgram;
+// let id;
 
 const vs = `
 precision mediump float;
@@ -76,103 +75,213 @@ void main() {
 }
 `;
 
-function loadShader(gl, type, source) {
-  const shader = gl.createShader(type);
-  gl.shaderSource(shader, source);
-  gl.compileShader(shader);
+class ShaderSetup {
+  constructor(gl, canvas) {
+    this.program = null;
+    this.gl = gl;
+    this.vs = null;
+    this.fs = null;
+    this.buffers = null;
+    this.positions = [];
 
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-    gl.deleteShader(shader);
-    return null;
+    this.canvas = canvas;
+    this.uTime = '';
+    this.time = 2.0;
+    this.limit = 12;
+    this.id = '';
   }
 
-  return shader;
-}
+  loadShader(type, source) {
+    const shader = this.gl.createShader(type);
+    this.gl.shaderSource(shader, source);
+    this.gl.compileShader(shader);
 
-function initShaderProgram(vsSource, fsSource) {
-  const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-  const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
-  
-  const shaderProgram = gl.createProgram();
-  gl.attachShader(shaderProgram, vertexShader);
-  gl.attachShader(shaderProgram, fragmentShader);
-  gl.linkProgram(shaderProgram);
-  gl.useProgram(shaderProgram);
+    if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
+      this.gl.deleteShader(shader);
+      return null;
+    }
 
-  return shaderProgram;
-}
-
-function initBuffers() {
-  const positionBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 3, 3, -1]), gl.STATIC_DRAW);
-}
-
-function initLocation() {
-  const positionLocation = gl.getAttribLocation(theProgram, "a_position");
-  gl.enableVertexAttribArray(positionLocation);
-  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);  
-}
-
-function initUniforms() {
-  const uResolution = gl.getUniformLocation(theProgram, 'u_resolution');
-  gl.uniform3f(uResolution, canvas.width, canvas.height, 1.0);
-
-  const uTime = gl.getUniformLocation(theProgram, 'u_time');
-  gl.uniform1f(uTime, time);
-
-  return uTime;
-}
-
-function start(theVS, theFS) {
-  theProgram = initShaderProgram(theVS, theFS);
-  initBuffers();
-  initLocation();
-  uniformTime = initUniforms();
-}
-
-start(vs, fs);
-
-gl.clearColor(0.0, 0.0, 0.0, 0.0);
-gl.clear(gl.COLOR_BUFFER_BIT);
-// gl.clearDepth(1.0);
-gl.enable(gl.DEPTH_TEST);
-gl.depthFunc(gl.LEQUAL);
-
-function render(now) {
-  time += 0.01;
-  
-  gl.uniform1f(uniformTime, time);
-  gl.drawArrays(gl.TRIANGLES, 0, 3);  
-
-  if (time >= timeLimit) {
-    window.cancelAnimationFrame(render);
-    time = 0.0;
-    canvas.style.opacity = '0';
-    canvas.style.zIndex = '0';
-    return;
+    return shader;
   }
 
-  id = window.requestAnimationFrame(render);
+  initProgram(vsSource, fsSource) {
+    this.vs = this.loadShader(this.gl.VERTEX_SHADER, vsSource);
+    this.fs = this.loadShader(this.gl.FRAGMENT_SHADER, fsSource);
+
+    const shaderProgram = this.gl.createProgram();
+    this.gl.attachShader(shaderProgram, this.vs);
+    this.gl.attachShader(shaderProgram, this.fs);
+    this.gl.linkProgram(shaderProgram);
+    this.gl.useProgram(shaderProgram);
+
+    this.program = shaderProgram;
+  }
+
+  initBuffers() {
+    this.positions = [-1, -1, -1, 3, 3, -1];
+
+    const positionBuffer = this.gl.createBuffer();
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.positions), this.gl.STATIC_DRAW);
+  
+    this.buffers = {
+      position: positionBuffer
+    }
+  }
+
+  initLocations() {
+    this.gl.useProgram(this.program);
+
+    const positionLocation = this.gl.getAttribLocation(this.program, "a_position");
+    this.gl.vertexAttribPointer(positionLocation, 2, this.gl.FLOAT, false, 0, 0);  
+    this.gl.enableVertexAttribArray(positionLocation);
+
+    const uResolution = this.gl.getUniformLocation(this.program, 'u_resolution');
+    this.gl.uniform3f(uResolution, this.canvas.width, this.canvas.height, 1.0);
+
+    const uniformTime = this.gl.getUniformLocation(this.program, 'u_time');
+    this.gl.uniform1f(uniformTime, this.time);
+
+    this.uTime = uniformTime; 
+  }
+
+  setup(vs, fs) {
+    this.initProgram(vs, fs);
+    this.initBuffers();
+    this.initLocations();
+    this.clear();
+    this.render();
+  }
+
+  reset(vs, fs) {
+    this.initProgram(vs, fs);
+    this.initBuffers();
+    this.initLocations();
+    this.render();
+  }
+
+  clear() {
+    // this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    // this.gl.clearDepth(1.0);
+    // this.gl.enable(this.gl.DEPTH_TEST);
+    // this.gl.depthFunc(this.gl.LEQUAL);
+
+    this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    // gl.clearDepth(1.0);
+    this.gl.enable(this.gl.DEPTH_TEST);
+    this.gl.depthFunc(this.gl.LEQUAL);
+  }
+
+  pause() {
+    window.cancelAnimationFrame(this.id);
+    this.time = 2.0;
+  }
+
+  render() {
+    this.time += 0.01;
+
+    this.gl.uniform1f(this.uTime, this.time);
+    this.gl.drawArrays(this.gl.TRIANGLES, 0, 3);  
+
+    if (this.time >= this.limit) {
+      this.pause();
+      return;
+    }
+
+    this.id = window.requestAnimationFrame(() => this.render());
+  }
 }
 
-function pause() {
-  window.cancelAnimationFrame(id);
-}
+// function loadShader(gl, type, source) {
+//   const shader = gl.createShader(type);
+//   gl.shaderSource(shader, source);
+//   gl.compileShader(shader);
 
-function hideCanvas() {
-  canvas.style.opacity = '0';
-  canvas.style.transform = 'scale(1.0)';
-  canvas.style.zIndex = '0';
-  canvas.style.height = '0px';
-  time = 2.0;
-  pause();
-}
+//   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+//     gl.deleteShader(shader);
+//     return null;
+//   }
 
-function displayCanvas() {
-  canvas.style.opacity = '1.0';
-  canvas.style.transform = 'scale(1.25)';
-  canvas.style.zIndex = '10';
-  canvas.style.height = '100px';
-  render();
-}
+//   return shader;
+// }
+
+// function initShaderProgram(vsSource, fsSource) {
+//   const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+//   const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+  
+//   const shaderProgram = gl.createProgram();
+//   gl.attachShader(shaderProgram, vertexShader);
+//   gl.attachShader(shaderProgram, fragmentShader);
+//   gl.linkProgram(shaderProgram);
+//   gl.useProgram(shaderProgram);
+
+//   return shaderProgram;
+// }
+
+// function initBuffers() {
+//   const positionBuffer = gl.createBuffer();
+//   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+//   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 3, 3, -1]), gl.STATIC_DRAW);
+// }
+
+// function initLocation() {
+//   const positionLocation = gl.getAttribLocation(theProgram, "a_position");
+//   gl.enableVertexAttribArray(positionLocation);
+//   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);  
+// }
+
+// function initUniforms() {
+//   const uResolution = gl.getUniformLocation(theProgram, 'u_resolution');
+//   gl.uniform3f(uResolution, canvas.width, canvas.height, 1.0);
+
+//   const uTime = gl.getUniformLocation(theProgram, 'u_time');
+//   gl.uniform1f(uTime, time);
+
+//   return uTime;
+// }
+
+
+// gl.clearColor(0.0, 0.0, 0.0, 0.0);
+// gl.clear(gl.COLOR_BUFFER_BIT);
+// // gl.clearDepth(1.0);
+// gl.enable(gl.DEPTH_TEST);
+// gl.depthFunc(gl.LEQUAL);
+
+// function render(now) {
+//   time += 0.01;
+  
+//   gl.uniform1f(uniformTime, time);
+//   gl.drawArrays(gl.TRIANGLES, 0, 3);  
+
+//   if (time >= timeLimit) {
+//     window.cancelAnimationFrame(render);
+//     time = 0.0;
+//     canvas.style.opacity = '0';
+//     canvas.style.zIndex = '0';
+//     return;
+//   }
+
+//   id = window.requestAnimationFrame(render);
+// }
+
+// function pause() {
+//   window.cancelAnimationFrame(id);
+// }
+
+// function hideCanvas() {
+//   canvas.style.opacity = '0';
+//   canvas.style.transform = 'scale(1.0)';
+//   canvas.style.zIndex = '0';
+//   canvas.style.height = '0px';
+//   time = 2.0;
+//   pause();
+// }
+
+// function displayCanvas() {
+//   canvas.style.opacity = '1.0';
+//   canvas.style.transform = 'scale(1.25)';
+//   canvas.style.zIndex = '10';
+//   canvas.style.height = '100px';
+//   render();
+// }

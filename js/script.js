@@ -3,9 +3,37 @@ let sound = document.querySelector('.sound');
 let move = document.querySelector('.move');
 let moveText = document.querySelector('.move-text');
 let title = document.querySelector('.mochi-title');
+let canvas = document.querySelector('.the-canvas');
+let gl = canvas.getContext('webgl', { alpha: true });
 
 let mode = 'attack';
 let current = 0;
+
+let setup = new ShaderSetup(gl, canvas);
+
+function start(vs, fs) {
+  setup.initProgram(vs, fs);
+  setup.initBuffers();
+  setup.initLocations();
+  setup.clear();
+}
+
+function hideCanvas() {
+  canvas.style.opacity = '0';
+  canvas.style.transform = 'scale(1.0)';
+  canvas.style.zIndex = '0';
+  canvas.style.height = '0px';
+  time = 2.0;
+  setup.pause();
+}
+
+function displayCanvas() {
+  canvas.style.opacity = '1.0';
+  canvas.style.transform = 'scale(1.25)';
+  canvas.style.zIndex = '10';
+  canvas.style.height = '100px';
+  setup.render();
+}
 
 function resetCurrent() {
 	current = current < moves.length - 1 ? current + 1 : 0;
@@ -55,6 +83,7 @@ function handleMochiClick() {
 	} else {
 		meow();
 	}
+
 	displayCanvas();
 }
 
@@ -70,5 +99,10 @@ function handleTitleClick() {
 	console.log(mode);
 }
 
+function handleLoad() {
+	start(vs, fs);
+}
+
 mochi.addEventListener('click', handleMochiClick);
 title.addEventListener('click', handleTitleClick);
+window.addEventListener('load', handleLoad);
