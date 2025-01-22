@@ -1,11 +1,3 @@
-// let canvas = document.querySelector('.the-canvas');
-// let gl = canvas.getContext('webgl', { alpha: true });
-// const timeLimit = 4;
-// let time = 2.0;
-// let uniformTime;
-// let theProgram;
-// let id;
-
 const vs = `
 precision mediump float;
 attribute vec4 a_position;
@@ -161,11 +153,6 @@ class ShaderSetup {
   }
 
   clear() {
-    // this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    // this.gl.clearDepth(1.0);
-    // this.gl.enable(this.gl.DEPTH_TEST);
-    // this.gl.depthFunc(this.gl.LEQUAL);
-
     this.gl.clearColor(0.0, 0.0, 0.0, 0.0);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     // gl.clearDepth(1.0);
@@ -192,96 +179,3 @@ class ShaderSetup {
     this.id = window.requestAnimationFrame(() => this.render());
   }
 }
-
-// function loadShader(gl, type, source) {
-//   const shader = gl.createShader(type);
-//   gl.shaderSource(shader, source);
-//   gl.compileShader(shader);
-
-//   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-//     gl.deleteShader(shader);
-//     return null;
-//   }
-
-//   return shader;
-// }
-
-// function initShaderProgram(vsSource, fsSource) {
-//   const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-//   const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
-  
-//   const shaderProgram = gl.createProgram();
-//   gl.attachShader(shaderProgram, vertexShader);
-//   gl.attachShader(shaderProgram, fragmentShader);
-//   gl.linkProgram(shaderProgram);
-//   gl.useProgram(shaderProgram);
-
-//   return shaderProgram;
-// }
-
-// function initBuffers() {
-//   const positionBuffer = gl.createBuffer();
-//   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-//   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 3, 3, -1]), gl.STATIC_DRAW);
-// }
-
-// function initLocation() {
-//   const positionLocation = gl.getAttribLocation(theProgram, "a_position");
-//   gl.enableVertexAttribArray(positionLocation);
-//   gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);  
-// }
-
-// function initUniforms() {
-//   const uResolution = gl.getUniformLocation(theProgram, 'u_resolution');
-//   gl.uniform3f(uResolution, canvas.width, canvas.height, 1.0);
-
-//   const uTime = gl.getUniformLocation(theProgram, 'u_time');
-//   gl.uniform1f(uTime, time);
-
-//   return uTime;
-// }
-
-
-// gl.clearColor(0.0, 0.0, 0.0, 0.0);
-// gl.clear(gl.COLOR_BUFFER_BIT);
-// // gl.clearDepth(1.0);
-// gl.enable(gl.DEPTH_TEST);
-// gl.depthFunc(gl.LEQUAL);
-
-// function render(now) {
-//   time += 0.01;
-  
-//   gl.uniform1f(uniformTime, time);
-//   gl.drawArrays(gl.TRIANGLES, 0, 3);  
-
-//   if (time >= timeLimit) {
-//     window.cancelAnimationFrame(render);
-//     time = 0.0;
-//     canvas.style.opacity = '0';
-//     canvas.style.zIndex = '0';
-//     return;
-//   }
-
-//   id = window.requestAnimationFrame(render);
-// }
-
-// function pause() {
-//   window.cancelAnimationFrame(id);
-// }
-
-// function hideCanvas() {
-//   canvas.style.opacity = '0';
-//   canvas.style.transform = 'scale(1.0)';
-//   canvas.style.zIndex = '0';
-//   canvas.style.height = '0px';
-//   time = 2.0;
-//   pause();
-// }
-
-// function displayCanvas() {
-//   canvas.style.opacity = '1.0';
-//   canvas.style.transform = 'scale(1.25)';
-//   canvas.style.zIndex = '10';
-//   canvas.style.height = '100px';
-//   render();
-// }
