@@ -84,6 +84,11 @@ body {
 /*	cx: ;*/
 }
 
+.greece-link {
+	color: #e4a167;
+	text-decoration: none;
+}
+
 @keyframes rain {
 	0% {
 		filter: hue-rotate(0deg);

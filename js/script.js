@@ -41,7 +41,8 @@ function resetCurrent() {
 
 function fillText(name) {
 	moveText.style.opacity = 1;
-	move.textContent = name.toUpperCase();
+	// move.textContent = name.toUpperCase();
+	move.innerHTML = 'Plan the trip to <a class="greece-link" target="_blank" href="https://www.naturelovescouragefest.com/">Greece</a>!';
 	setTimeout(() => {
 		move.style.opacity = 1;
 	}, 500)
