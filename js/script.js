@@ -41,9 +41,9 @@ function resetCurrent() {
 
 function fillText(name) {
 	moveText.style.opacity = 1;
-	// move.textContent = name.toUpperCase();
+	move.textContent = name.toUpperCase();
 	// move.innerHTML = name;
-	move.innerHTML = 'Plan trip to <a class="greece-link" target="_blank" href="https://www.naturelovescouragefest.com/">Greece</a>!';
+	// move.innerHTML = 'Plan trip to <a class="greece-link" target="_blank" href="https://www.naturelovescouragefest.com/">Greece</a>!';
 	setTimeout(() => {
 		move.style.opacity = 1;
 	}, 500)
@@ -102,7 +102,8 @@ function handleTitleClick() {
 }
 
 function handleLoad() {
-	start(vs, fs);
+	// start(vs, fs);
+	window.location.href = "https://crealu.github.io/husky-swan/"
 }
 
 mochi.addEventListener('click', handleMochiClick);
